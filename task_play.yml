@@ -1,0 +1,13 @@
+---
+- name: webapp playbook
+  hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+  tasks:
+    - name: remove image
+      command: docker rmi -f sakit333/coorg
+    - name: remove container
+      command: docker rm -f webapp
+    - name: run a container
+      command: docker run -it -d --name webapp -p 8090:8080 sakit333/coorg
