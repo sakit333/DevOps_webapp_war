@@ -7,7 +7,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8000
+      targetPort: 8080
   selector:
     name: deployment
   type: LoadBalancer
@@ -17,7 +17,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-   name: Webapp
+   name: webapp
 spec:
    replicas: 1
    selector:
@@ -34,4 +34,4 @@ spec:
           image: sakit333/kubeweb:latest
           imagePullPolicy: Always
           ports:
-          - containerPort: 8000
+          - containerPort: 8090
