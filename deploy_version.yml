@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: webapp
+spec:
+   replicas: 1
+   selector:
+    matchLabels:
+     name: deployment
+   template:
+     metadata:
+       name: sak
+       labels:
+         name: deployment
+     spec:
+      containers:
+        - name: home
+          image: sakit333/kubeweb: v1.1
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8090
