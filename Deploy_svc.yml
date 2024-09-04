@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flipkart
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  selector:
+    name: deployment
+  type: LoadBalancer
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: Webapp
+spec:
+   replicas: 1
+   selector:
+    matchLabels:
+     name: deployment
+   template:
+     metadata:
+       name: sak
+       labels:
+         name: deployment
+     spec:
+      containers:
+        - name: home
+          image: sakit333/kubeweb:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8000
