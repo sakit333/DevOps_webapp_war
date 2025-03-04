@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+    
+    tools{
+        maven 'maven'
+    }
+    
+    stages {
+        stage('pull source code') {
+            steps {
+                git branch: 'main', url: 'https://github.dev/sakit333/DevOps_webapp_war.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    sshPublisher(publishers: [
+                        sshPublisherDesc(
+                            configName: 'sshserver', 
+                            transfers: [
+                                sshTransfer(
+                                    sourceFiles: 'Dockerfile, *.war', 
+                                    remoteDirectory: '.', 
+                                    execCommand: '''
+                                        docker rmi -f sak
+                                        docker rm -f webapp
+                                        docker build -t sak .
+                                        docker run -it -d --name webapp -p 8081:8080 sak
+                                    '''
+                                )
+                            ]
+                        )
+                    ])
+                }
+            }
+        }
+    }
+}
